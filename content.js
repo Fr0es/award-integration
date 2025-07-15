@@ -8,7 +8,7 @@ if (document.title === "MARFTpro Web - Login" ||
   
   // Cria o elemento do GIF
   const gifButton = document.createElement('img');
-  gifButton.src = chrome.runtime.getURL('images/icon.gif');
+  gifButton.src = 'https://github.com/Fr0es/award-integration/blob/master/images/icon.gif?raw=true';
   gifButton.id = 'flask-app-button';
   gifButton.title = 'Abrir aplicativo Flask';
   
