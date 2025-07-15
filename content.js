@@ -36,18 +36,17 @@ function openFlaskOverlay() {
   const iframe = document.createElement('iframe');
   iframe.src = 'http://192.168.1.150:5000';
   iframe.frameBorder = '0';
+  iframe.id = 'flask-iframe';
   
   // Cria o botão de fechar
   const closeButton = document.createElement('button');
   closeButton.id = 'close-overlay';
-  closeButton.textContent = 'Fechar';
+  closeButton.textContent = '×'; // símbolo de fechar
   
   // Monta a estrutura
   overlayContent.appendChild(iframe);
   overlayContent.appendChild(closeButton);
   overlay.appendChild(overlayContent);
-  
-  // Adiciona ao body
   document.body.appendChild(overlay);
   
   // Adiciona evento para o botão de fechar
