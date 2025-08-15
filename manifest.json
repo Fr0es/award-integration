@@ -23,7 +23,11 @@
     }
   ],
   "web_accessible_resources": [{
-    "resources": ["images/icon.gif", "overlay.html"],
-    "matches": ["http://192.168.1.150/*"]
-  }]
+  "resources": [
+    "images/icon.gif", 
+    "overlay.html",
+    "fallback.html" 
+  ],
+  "matches": ["http://192.168.1.150/*"]
+}]
 }

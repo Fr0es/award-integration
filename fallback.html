@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gutemberg - Em Construção</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #00b4d8;
+        }
+
+        .contact {
+            font-size: 1.2em;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact a {
+            color: #00b4d8;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .contact a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #90e0ef;
+            transition: width 0.3s ease;
+        }
+
+        .contact a:hover::after {
+            width: 100%;
+        }
+
+        .construction {
+            animation: pulse 2s infinite;
+        }
+
+        .tractor-container {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            margin: 2rem 0;
+        }
+
+        .tractor {
+            position: absolute;
+            font-size: 3rem;
+            left: 0;
+            animation: moveTractor 6s linear infinite;
+            transform-origin: center;
+        }
+
+        .dust {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes moveTractor {
+            0% {
+                left: 0;
+                transform: scaleX(-1); /* Começa virado para direita */
+            }
+            48% {
+                transform: scaleX(-1);
+            }
+            50% {
+                left: calc(100% - 60px);
+                transform: scaleX(1); /* Vira para esquerda */
+            }
+            98% {
+                transform: scaleX(1);
+            }
+            100% {
+                left: 0;
+                transform: scaleX(-1);
+            }
+        }
+
+        @keyframes dustCloud {
+            0% {
+                opacity: 0.6;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20px) scale(2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    
+    <div class="container">
+        <h1 class="construction">🚧 Em Manutenção</h1>
+        
+        <div class="tractor-container">
+            <div class="tractor">🚜</div>
+        </div>
+
+        <p>Estou trabalhando em algo incrível! Volte em breve.</p>
+        
+        <div class="contact">
+            Entre em contato: <a href="mailto:contato@gutemberg.dev.br">contato@gutemberg.dev.br</a>
+        </div>
+    </div>
+
+    <script>
+        function createParticles() {
+            const particles = document.querySelector('.particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(255, 255, 255, ${Math.random() * 0.5});
+                    border-radius: 50%;
+                    animation: float ${5 + Math.random() * 10}s infinite linear;
+                `;
+
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                const keyframes = `@keyframes float {
+                    from { transform: translate(0, 0) rotate(0deg); }
+                    to { transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(360deg); }
+                }`;
+                
+                const style = document.createElement('style');
+                style.appendChild(document.createTextNode(keyframes));
+                document.head.appendChild(style);
+
+                particles.appendChild(particle);
+            }
+        }
+
+        function typeEffect() {
+            const title = document.querySelector('h1');
+            const text = 'Em Manutenção';
+            let index = 0;
+
+            title.innerHTML = '';
+            
+            function type() {
+                if (index < text.length) {
+                    title.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(type, 150);
+                }
+            }
+            type();
+        }
+
+        function createDust(x, y) {
+            const dust = document.createElement('div');
+            dust.className = 'dust';
+            dust.style.left = x + 'px';
+            dust.style.top = y + 'px';
+            dust.style.animation = `dustCloud ${0.5 + Math.random() * 0.5}s ease-out`;
+            document.body.appendChild(dust);
+            setTimeout(() => dust.remove(), 1000);
+        }
+
+        function animateTractor() {
+            const tractor = document.querySelector('.tractor');
+            let lastPosition = 0;
+            
+            function update() {
+                const rect = tractor.getBoundingClientRect();
+                const currentPosition = rect.left;
+                
+                if (Math.abs(currentPosition - lastPosition) > 1) {
+                    createDust(
+                        rect.left + rect.width/2,
+                        rect.top + rect.height/2
+                    );
+                }
+                lastPosition = currentPosition;
+                requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            typeEffect();
+            animateTractor();
+            
+            document.querySelector('.contact a').addEventListener('mouseover', () => {
+                document.documentElement.style.setProperty('--hover-color', '#90e0ef');
+            });
+            
+            document.querySelector('.contact a').addEventListener('mouseout', () => {
+                document.documentElement.style.setProperty('--hover-color', '#00b4d8');
+            });
+        });
+    </script>
+</body>
+</html>
