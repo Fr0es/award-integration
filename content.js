@@ -41,7 +41,7 @@ function openFlaskOverlay() {
   // Cria o botão de fechar
   const closeButton = document.createElement('button');
   closeButton.id = 'close-overlay';
-  closeButton.textContent = '×'; // símbolo de fechar
+  closeButton.textContent = '  SAIR  '; // símbolo de fechar
   
   // Monta a estrutura
   overlayContent.appendChild(iframe);
@@ -49,8 +49,21 @@ function openFlaskOverlay() {
   overlay.appendChild(overlayContent);
   document.body.appendChild(overlay);
   
-  // Adiciona evento para o botão de fechar
+  // Adiciona evento para o botão de fechar com LOGOUT
   closeButton.addEventListener('click', function() {
-    document.body.removeChild(overlay);
+    const iframeElem = document.getElementById('flask-iframe');
+    if (iframeElem) {
+      // Redireciona o iframe para a URL de logout (GET)
+      iframeElem.src = 'http://192.168.1.150:5000/logout';
+      // Aguarda um pouco para garantir que a requisição de logout foi enviada
+      setTimeout(function() {
+        const overlayElem = document.getElementById('flask-overlay');
+        if (overlayElem) overlayElem.remove();
+      }, 300);
+    } else {
+      // Fallback: remove diretamente
+      const overlayElem = document.getElementById('flask-overlay');
+      if (overlayElem) overlayElem.remove();
+    }
   });
 }
